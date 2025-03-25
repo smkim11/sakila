@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
-<%
+<%	
 	String storeId = request.getParameter("storeId");
 	if(request.getParameter("storeId")==null){
 		storeId = "0";
 	}
-	System.out.println("Id: "+storeId);
+	// System.out.println("Id: "+storeId);
 	
 	String searchWord = request.getParameter("searchWord");
 	if(request.getParameter("searchWord")==null){
 		searchWord = "";
 	}
-	System.out.println("Word: "+searchWord);
+	// System.out.println("Word: "+searchWord);
 	
 	int currentPage = 1;
 	if(request.getParameter("currentPage")!=null){
@@ -20,6 +20,8 @@
 	}
 	int rowPerPage = 10;
 	int startIdx = (currentPage-1)*10;
+	
+	
 %>
 <%
 	//mysql 로딩
@@ -33,7 +35,7 @@
 				 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 				 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 				 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-				 +"limit ?,?";
+				 +"order by rentalId "+"limit ?,?";
 	String sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 				 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 				 +"INNER JOIN film f ON i.film_id = f.film_id ";
@@ -50,7 +52,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where s.store_id=? "+"limit ?,?";
+			 +"where s.store_id=? "+"order by rentalId "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where s.store_id=?";
@@ -67,7 +69,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where f.title like ? "+"limit ?,?";
+			 +"where f.title like ? "+"order by rentalId "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where f.title like ?";
@@ -84,7 +86,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where s.store_id=? and f.title like ? "+"limit ?,?";
+			 +"where s.store_id=? and f.title like ? "+"order by rentalId "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where s.store_id=? and f.title like ?";
@@ -107,6 +109,14 @@
 	if(totalIdx % rowPerPage != 0){
 		lastPage++;
 	}
+	
+	// 1~10
+	int pageGroup = (currentPage - 1) / 10;
+    int startPage = pageGroup * 10 + 1;
+    int endPage = startPage + 9;
+    if(endPage>lastPage){
+    	endPage = lastPage;
+    }
 	
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	while(rs.next()){
@@ -158,7 +168,7 @@
 			
 	</table>
 	<form action = "/sakila/d0325/rentalList.jsp">
-		Store : 
+		지점 : 
 		<select name ="storeId">
 			<option value="0">전체</option>
 			<option value="1">1지점</option>
@@ -172,15 +182,34 @@
 		if(currentPage>1){
 	%>
 			<a href="/sakila/d0325/rentalList.jsp?currentPage=1&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[처음]</a>
-			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=currentPage-1 %>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[이전]</a>
+			
 	<% 
 		}
 	%>
-	<%=currentPage %>/<%=lastPage %>
+	<%
+		if(startPage>10){
+	%>
+			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=startPage-10 %>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[이전]</a>
+	<%
+		}
+	%>
+	<%
+		for(int i =startPage;i<=endPage;i++){
+	%>
+			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=i %>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[<%=i %>]</a>
+	<% 
+		}
+	%>
+	<%
+		if(endPage<lastPage){
+	%>
+			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=startPage+10 %>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[다음]</a>
+	<%
+		}
+	%>
 	<%
 		if(currentPage<lastPage){
 	%>
-			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=currentPage+1 %>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[이전]</a>
 			<a href="/sakila/d0325/rentalList.jsp?currentPage=<%=lastPage%>&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[마지막]</a>
 	<% 
 		}
