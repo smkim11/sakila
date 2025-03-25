@@ -110,7 +110,7 @@
 		lastPage++;
 	}
 	
-	// 1~10
+	// 10단위로 페이징
 	int pageGroup = (currentPage - 1) / 10;
     int startPage = pageGroup * 10 + 1;
     int endPage = startPage + 9;
