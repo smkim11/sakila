@@ -31,7 +31,7 @@
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null;
 	String sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-				 +",c.customer_id customerId, r.rental_date rentalDate, r.return_date returnDate"
+				 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
 				 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 				 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 				 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -48,7 +48,7 @@
 	}
 	else if(searchWord.equals("")){ // 지점만 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, r.return_date returnDate"
+			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -65,7 +65,7 @@
 	}
 	else if(storeId.equals("0")){ // 제목만 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, r.return_date returnDate"
+			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -82,7 +82,7 @@
 	}
 	else{ // 둘 다 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, r.return_date returnDate"
+			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -139,9 +139,9 @@
 <meta charset="UTF-8">
 <title></title>
 </head>
-<body>
+<body style="text-align: center">
 	<h1>Rental List</h1>
-	<table border="1">
+	<table border="1" style="margin:auto ; width:70%" >
 		<tr>
 			<th>rentalId</th>
 			<th>title</th>
@@ -178,11 +178,11 @@
 		<input type="text" name="searchWord">
 		<button type="submit">검색</button>
 	</form>
+	<div><%=currentPage %>/<%=lastPage %></div>
 	<%
 		if(currentPage>1){
 	%>
-			<a href="/sakila/d0325/rentalList.jsp?currentPage=1&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[처음]</a>
-			
+			<a href="/sakila/d0325/rentalList.jsp?currentPage=1&storeId=<%=storeId%>&searchWord=<%=searchWord%>">[처음]</a>	
 	<% 
 		}
 	%>
