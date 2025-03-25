@@ -31,7 +31,8 @@
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null;
 	String sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-				 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
+				 +",c.customer_id customerId, CONCAT_WS('-',YEAR(r.rental_date), MONTH(r.rental_date), DAy(r.rental_date)) rentalDate, "
+		 		 +"ifnull(CONCAT_WS('-',YEAR(r.return_date), MONTH(r.return_date), DAy(r.return_date)),'-') returnDate"
 				 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 				 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 				 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -48,7 +49,8 @@
 	}
 	else if(searchWord.equals("")){ // 지점만 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
+			 +",c.customer_id customerId, CONCAT_WS('-',YEAR(r.rental_date), MONTH(r.rental_date), DAy(r.rental_date)) rentalDate, "
+			 +"ifnull(CONCAT_WS('-',YEAR(r.return_date), MONTH(r.return_date), DAy(r.return_date)),'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -65,7 +67,8 @@
 	}
 	else if(storeId.equals("0")){ // 제목만 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
+			 +",c.customer_id customerId, CONCAT_WS('-',YEAR(r.rental_date), MONTH(r.rental_date), DAy(r.rental_date)) rentalDate, "
+			 +"ifnull(CONCAT_WS('-',YEAR(r.return_date), MONTH(r.return_date), DAy(r.return_date)),'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -82,7 +85,8 @@
 	}
 	else{ // 둘 다 입력했을 때
 		sql = "SELECT r.rental_id rentalId, s.store_id storeId,concat(c.first_name,' ',c.last_name) name"
-			 +",c.customer_id customerId, r.rental_date rentalDate, ifnull(r.return_date,'-') returnDate"
+			 +",c.customer_id customerId, CONCAT_WS('-',YEAR(r.rental_date), MONTH(r.rental_date), DAy(r.rental_date)) rentalDate, "
+			 +"ifnull(CONCAT_WS('-',YEAR(r.return_date), MONTH(r.return_date), DAy(r.return_date)),'-') returnDate"
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
@@ -111,10 +115,10 @@
 	}
 	
 	// 10단위로 페이징
-	int pageGroup = (currentPage - 1) / 10;
-    int startPage = pageGroup * 10 + 1;
-    int endPage = startPage + 9;
-    if(endPage>lastPage){
+	int pageGroup = (currentPage - 1) / 10; // currentPage가 1~10 이면 0 , 11~20이면 1...
+    int startPage = pageGroup * 10 + 1; 	// currentPage가 1~10 이면 1 , 11~20이면 11...
+    int endPage = startPage + 9;			// 10단위로 보여야하므로 startPage가 1이면 10, 11이면 20...
+    if(endPage>lastPage){					// 마지막페이지보다 커지면 endPage = 마지막 페이지가 된다
     	endPage = lastPage;
     }
 	
