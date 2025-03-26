@@ -35,11 +35,8 @@
 		stmt.setInt(2,rowPerPage);
 	}
 	else{ // 입력했을 때
-		sql = "SELECT f.film_id filmId, f.title, f.description, f.length, f.release_year releaseYear,"
-			+" c.name category from film f INNER JOIN film_category fc ON f.film_id = fc.film_id "
-			+"INNER JOIN category c ON fc.category_id = c.category_id where title like ? order by filmId asc limit ?,?";
-		sql2 = "select count(*) from film f INNER JOIN film_category fc ON f.film_id = fc.film_id "
-			 +"INNER JOIN category c ON fc.category_id = c.category_id where title like ?";
+		sql += "where title like ? order by filmId asc limit ?,?";
+		sql2 += " where title like ?";
 		stmt=conn.prepareStatement(sql);
 		stmt2=conn.prepareStatement(sql2);
 		stmt.setString(1,"%"+searchTitle+"%");
