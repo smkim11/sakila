@@ -12,7 +12,7 @@
 	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sakila", "root", "java1234");
 	// 영화 상세정보
 	String sql = "SELECT f.film_id filmId, f.title, f.description, "
-			+"f.length, f.release_year releaseYear, c.name category from film f "
+			+"concat(round(f.length/60,1),'시간') length, f.release_year releaseYear, c.name category from film f "
 			+"INNER JOIN film_category fc ON f.film_id = fc.film_id "
 			+"INNER JOIN category c ON fc.category_id = c.category_id "
 			+"where f.film_id = ?";
@@ -36,7 +36,7 @@
 		h.put("description", rs.getString("description"));
 		h.put("category", rs.getString("category"));
 		h.put("releaseYear", rs.getInt("releaseYear"));
-		h.put("length", rs.getInt("length"));
+		h.put("length", rs.getString("length"));
 		
 		list.add(h);
 	}
