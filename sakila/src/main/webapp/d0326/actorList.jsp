@@ -22,8 +22,8 @@
 	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sakila", "root", "java1234");
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null;
-	String sql = "SELECT actor_id actorId, CONCAT(first_name,' ',last_name)name "
-				+"FROM actor";
+	String sql = "SELECT actor_id actorId, CONCAT(first_name,' ',last_name) name "
+				+"FROM actor ";
 	String sql2 = "select count(*) from actor";
 	if(searchName.equals("")){ // 검색어 입력 안했을 때
 		sql+=" limit ?,?";
