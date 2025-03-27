@@ -23,12 +23,14 @@
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null; 
 	
-	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여가능') returnDate from "
+	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여가능') returnDate,s.store_id storeId, a.address from "
 				+"(SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '대여불가' "   
 				+"ELSE '대여가능' END return_date FROM rental WHERE (inventory_id, rental_date) "
 				+"IN (SELECT inventory_id,MAX(rental_date) FROM rental "
 				+"GROUP BY inventory_id)) t right JOIN inventory i ON i.inventory_id = t.inventory_id "
-				+"INNER JOIN film f ON f.film_id = i.film_id";
+				+"INNER JOIN film f ON f.film_id = i.film_id "
+				+"INNER JOIN store s ON s.store_id = i.store_id "
+				+"INNER JOIN address a ON a.address_id = s.address_id";
 	String sql2 = "select count(*) from (SELECT inventory_id, customer_id, return_date "
 				+"FROM rental WHERE (inventory_id, rental_date) "
 				+"IN (SELECT inventory_id,MAX(rental_date) FROM rental "
@@ -75,7 +77,8 @@
 	 	map.put("inventoryId",rs.getInt("inventoryId"));
 	 	map.put("title",rs.getString("title"));
 	 	map.put("returnDate",rs.getString("returnDate"));
-	 	
+	 	map.put("storeId",rs.getInt("storeId"));
+	 	map.put("address",rs.getString("address"));
 	 	list.add(map);
 	}
 %>
@@ -92,7 +95,8 @@
 			<th>ID</th>
 			<th>TITLE</th>
 			<th>RETURN DATE</th>
-			<th>RENTAL LINK</th>
+			<th>STOREID</th>
+			<th>ADDRESS</th>
 		</tr>
 		<% 
 			for(HashMap<String,Object> map : list){
@@ -100,15 +104,20 @@
 				<tr>
 					<td><%=map.get("inventoryId") %></td>
 					<td><%=map.get("title") %></td>
-					<td><%=map.get("returnDate") %></td>
+					<td><%=map.get("storeId") %>지점</td>
+					<td><%=map.get("address") %></td>
 					<td>
-						<%
+					<%
 							if(!map.get("returnDate").equals("대여불가")){ // 대여가능하면 표시
-						%>
-								<a href="/sakila/d0327/inventoryList.jsp">대여</a>
-						<%
+					%>
+								<a href="/sakila/d0327/inventoryList.jsp"><%=map.get("returnDate") %></a>
+					<%
+							}else{
+					%>
+								<%=map.get("returnDate") %>
+					<%
 							}
-						%>
+					%>
 					</td>
 				</tr>
 		<% 
