@@ -23,26 +23,31 @@
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null; 
 	
-	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여가능') returnDate,i.store_id storeId from "
-				+"(SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '대여불가' "   
+	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여가능') returnDate,i.store_id storeId, a.address "
+				+"from inventory i INNER JOIN film f ON f.film_id = i.film_id "   
+				+"left JOIN (SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '대여불가' "
 				+"ELSE '대여가능' END return_date FROM rental WHERE (inventory_id, rental_date) "
-				+"IN (SELECT inventory_id,MAX(rental_date) FROM rental "
-				+"GROUP BY inventory_id)) t right JOIN inventory i ON i.inventory_id = t.inventory_id "
-				+"INNER JOIN film f ON f.film_id = i.film_id ";
-	String sql2 = "select count(*) from (SELECT inventory_id, customer_id, return_date "
-				+"FROM rental WHERE (inventory_id, rental_date) "
-				+"IN (SELECT inventory_id,MAX(rental_date) FROM rental "
-				+"GROUP BY inventory_id)) t right JOIN inventory i ON i.inventory_id = t.inventory_id "
-				+"INNER JOIN film f ON f.film_id = i.film_id";
+				+"IN (SELECT inventory_id,MAX(rental_date) rental_date FROM rental "
+				+"GROUP BY inventory_id)) t ON i.inventory_id = t.inventory_id "
+				+"INNER JOIN store st ON i.store_id = st.store_id "
+				+"INNER JOIN address a ON a.address_id = st.address_id ";
+	
+	String sql2 = "select count(*) from inventory i INNER JOIN film f ON f.film_id = i.film_id "
+				+"left JOIN (SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '대여불가' "
+				+"ELSE '대여가능' END return_date FROM rental WHERE (inventory_id, rental_date) "
+				+"IN (SELECT inventory_id,MAX(rental_date) rental_date FROM rental "
+				+"GROUP BY inventory_id)) t ON i.inventory_id = t.inventory_id "
+				+"INNER JOIN store st ON i.store_id = st.store_id "
+				+"INNER JOIN address a ON a.address_id = st.address_id";
 	if(searchTitle.equals("")){ // 검색어 입력하지 않았을 때
-		sql += " limit ?,?";
+		sql += "ORDER BY inventoryId asc limit ?,?";
 		stmt = conn.prepareStatement(sql);
 		stmt2 = conn.prepareStatement(sql2);
 		stmt.setInt(1,startIdx);
 		stmt.setInt(2,rowPerPage);
 	}
 	else{ // 검색어 입력했을 때
-		sql += " where title like ? limit ?,?";
+		sql += " where title like ? ORDER BY inventoryId asc limit ?,?";
 		sql2 += " where title like ?";
 		stmt = conn.prepareStatement(sql);
 		stmt2 = conn.prepareStatement(sql2);
@@ -76,7 +81,7 @@
 	 	map.put("title",rs.getString("title"));
 	 	map.put("returnDate",rs.getString("returnDate"));
 	 	map.put("storeId",rs.getInt("storeId"));
-
+		map.put("address",rs.getString("address"));
 	 	list.add(map);
 	}
 %>
@@ -92,8 +97,9 @@
 		<tr>
 			<th>ID</th>
 			<th>TITLE</th>
-			<th>RETURN DATE</th>
 			<th>STOREID</th>
+			<th>ADDRESS</th>
+			<th>RETURN DATE</th>
 		</tr>
 		<% 
 			for(HashMap<String,Object> map : list){
@@ -102,6 +108,7 @@
 					<td><%=map.get("inventoryId") %></td>
 					<td><%=map.get("title") %></td>
 					<td><%=map.get("storeId") %>지점</td>
+					<td><%=map.get("address") %></td>
 					<td>
 					<%
 							if(!map.get("returnDate").equals("대여불가")){ // 대여가능하면 표시
@@ -148,7 +155,7 @@
 		}
 	%>
 	<%
-		if(endPage>lastPage){
+		if(endPage<lastPage){
 	%>
 			<a href="/sakila/d0327/inventoryList.jsp?searchTitle=<%=searchTitle %>&currentPage=<%=startPage+10 %>">[다음]</a>
 	<% 
