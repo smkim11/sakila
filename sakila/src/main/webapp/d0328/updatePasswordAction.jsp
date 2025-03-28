@@ -19,9 +19,9 @@
 	int row = stmt.executeUpdate();
 	if(row==0){
 		System.out.println("변경 실패");
-		response.sendRedirect("/sakila/updatePasswordForm.jsp");
+		response.sendRedirect("/sakila/d0328/updatePasswordForm.jsp");
 		return;
 	}
 	System.out.println("변경 성공");
-	response.sendRedirect("/sakila/logout.jsp");
+	response.sendRedirect("/sakila/d0328/logout.jsp");
 %>

@@ -15,7 +15,7 @@
 </head>
 <body style="text-align:center">
 	<h1>Staff Login</h1>
-	<form action="/sakila/loginAction.jsp">
+	<form action="/sakila/d0328/loginAction.jsp">
 	<table border="1" style="margin:auto; width:auto">
 		<tr>
 			<th>ID</th>
