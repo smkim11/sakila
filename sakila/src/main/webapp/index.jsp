@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	Integer staffId = (Integer)(session.getAttribute("loginStaff"));
+	String username = (String)(session.getAttribute("username"));
 %>
 <!DOCTYPE html>
 <html>
@@ -13,13 +14,13 @@
 		<%
 			if(staffId == null){
 		%>
-				<a href="/sakila/loginForm.jsp">[로그인]</a>
+				<a href="/sakila/d0328/loginForm.jsp">[로그인]</a>
 		<% 
 			}else{		
 		%>
-				<%=staffId %>님 반갑습니다
-				<a href="/sakila/logout.jsp">[로그아웃]</a>
-				<a href="/sakila/updatePasswordForm.jsp">[비밀번호수정]</a>
+				<%=username %>님 반갑습니다
+				<a href="/sakila/d0328/logout.jsp">[로그아웃]</a>
+				<a href="/sakila/d0328/updatePasswordForm.jsp">[비밀번호수정]</a>
 		<% 
 			}
 		%>
