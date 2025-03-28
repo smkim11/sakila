@@ -2,6 +2,11 @@
 <%@ page import="java.sql.*" %>
 <%
 	Integer staffId = (Integer)(session.getAttribute("loginStaff"));
+
+	if(staffId == null){ // 로그아웃 상태라면
+		response.sendRedirect("/sakila/index.jsp");
+		return;
+	}
 %>
 <!DOCTYPE html>
 <html>
