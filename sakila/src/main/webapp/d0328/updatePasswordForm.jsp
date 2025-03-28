@@ -21,6 +21,10 @@
 			<th>New PW</th>
 			<td><input type="password" name="newPw"></td>
 		</tr>
+		<tr>
+			<th>New PW2</th>
+			<td><input type="password" name="newPw2"></td>
+		</tr>
 	</table>
 	<button type="submit">수정</button>
 	</form>
