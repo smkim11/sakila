@@ -6,7 +6,7 @@
 	
 	// 로그인 되었는지 안되었는지 확인
 	if(staffId == null){ // 로그아웃 상태라면
-		response.sendRedirect("/sakila/loginForm.jsp");
+		response.sendRedirect("/sakila/d0328/loginForm.jsp");
 		return;
 	}
 	
@@ -88,6 +88,7 @@
 </head>
 <body style="text-align:center">
 	<h1>Film List</h1>
+	<a href="/sakila/index.jsp">[시작페이지로]</a>
 	<table border="1" style="margin:auto ; width:70%">
 		<tr>
 			<th>filmId</th>

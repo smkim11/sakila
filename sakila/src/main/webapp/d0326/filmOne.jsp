@@ -6,7 +6,7 @@
 	
 	// 로그인 되었는지 안되었는지 확인
 	if(staffId == null){ // 로그아웃 상태라면
-		response.sendRedirect("/sakila/loginForm.jsp");
+		response.sendRedirect("/sakila/d0328/loginForm.jsp");
 		return;
 	}
 	
