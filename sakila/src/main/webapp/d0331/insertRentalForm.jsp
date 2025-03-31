@@ -65,7 +65,7 @@
 					</tr>
 					<tr>
 						<th>filmId</th>
-						<td><input type = "text" name ="filmId" value="<%=rs.getInt("filmId") %>"></td>
+						<td><input type = "text" name ="filmId" value="<%=rs.getInt("filmId") %>" readonly></td>
 					</tr>
 					<tr>
 						<th>title</th>
