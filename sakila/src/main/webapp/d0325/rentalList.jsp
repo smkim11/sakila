@@ -44,7 +44,7 @@
 				 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 				 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 				 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-				 +"order by rentalId "+"limit ?,?";
+				 +"order by rentalId desc "+"limit ?,?";
 	String sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 				 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 				 +"INNER JOIN film f ON i.film_id = f.film_id ";
@@ -62,7 +62,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where s.store_id=? "+"order by rentalId "+"limit ?,?";
+			 +"where s.store_id=? "+"order by rentalId desc "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where s.store_id=?";
@@ -80,7 +80,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where f.title like ? "+"order by rentalId "+"limit ?,?";
+			 +"where f.title like ? "+"order by rentalId desc "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where f.title like ?";
@@ -98,7 +98,7 @@
 			 +", r.inventory_id inventoryId, f.title "+"FROM rental r "
 			 +"INNER JOIN staff s ON r.staff_id = s.staff_id "+"INNER JOIN customer c ON c.customer_id = r.customer_id "
 			 +"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "+"INNER JOIN film f ON i.film_id = f.film_id "
-			 +"where s.store_id=? and f.title like ? "+"order by rentalId "+"limit ?,?";
+			 +"where s.store_id=? and f.title like ? "+"order by rentalId desc "+"limit ?,?";
 		sql2 = "select count(*) from rental r "+"INNER JOIN staff s ON r.staff_id = s.staff_id "
 			 +"INNER JOIN customer c ON c.customer_id = r.customer_id "+"INNER JOIN inventory i ON r.inventory_id = i.inventory_id "
 			 +"INNER JOIN film f ON i.film_id = f.film_id "+"where s.store_id=? and f.title like ?";
