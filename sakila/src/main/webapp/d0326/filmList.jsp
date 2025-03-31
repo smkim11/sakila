@@ -105,7 +105,7 @@
 			}
 		%>
 	</table>
-	<form action="/sakila/d0326/filmList.jsp">
+	<form action="/sakila/d0326/filmList.jsp" method="post">
 		<input type="text" name="searchTitle">
 		<button type="submit">검색</button>
 	</form>

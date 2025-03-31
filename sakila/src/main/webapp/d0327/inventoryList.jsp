@@ -138,7 +138,7 @@
 		
 		
 	</table>
-	<form action="/sakila/d0327/inventoryList.jsp">
+	<form action="/sakila/d0327/inventoryList.jsp" method="post">
 		<input type="text" name="searchTitle">
 		<button type="submit">검색</button>
 	</form>

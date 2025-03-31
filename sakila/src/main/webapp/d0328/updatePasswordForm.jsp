@@ -16,7 +16,7 @@
 </head>
 <body style="text-align: center">
 	<h1>Update Password</h1>
-	<form action="/sakila/d0328/updatePasswordAction.jsp">
+	<form action="/sakila/d0328/updatePasswordAction.jsp" method="post">
 	<table border="1" style="margin:auto;width:auto">
 		<tr>
 			<th>Pre PW</th>

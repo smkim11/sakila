@@ -180,7 +180,7 @@
 			
 			
 	</table>
-	<form action = "/sakila/d0325/rentalList.jsp">
+	<form action = "/sakila/d0325/rentalList.jsp" method="post">
 		지점 : 
 		<select name ="storeId">
 			<option value="0">전체</option>
