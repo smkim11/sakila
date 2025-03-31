@@ -10,6 +10,7 @@
 	Integer customerId = Integer.valueOf(request.getParameter("customerId"));
 	Integer inventoryId = Integer.valueOf(request.getParameter("inventoryId"));
 	String searchName = request.getParameter("searchName");
+	Integer currentPage = Integer.valueOf(request.getParameter("currentPage"));
 %>
 <%
 	Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,5 +30,5 @@
 	}
 	
 	
-	response.sendRedirect("/sakila/d0331/searchCustomidList.jsp?inventoryId="+inventoryId+"&searchName="+searchName);
+	response.sendRedirect("/sakila/d0331/searchCustomidList.jsp?currentPage="+currentPage+"&inventoryId="+inventoryId+"&searchName="+searchName);
 %>
