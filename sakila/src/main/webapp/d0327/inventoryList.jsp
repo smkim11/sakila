@@ -31,10 +31,10 @@
 	PreparedStatement stmt = null;
 	PreparedStatement stmt2 = null; 
 	
-	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여가능') returnDate,i.store_id storeId, a.address "
+	String sql ="SELECT i.inventory_id inventoryId, f.title, ifnull(t.return_date, '대여하기') returnDate,i.store_id storeId, a.address "
 				+"from inventory i INNER JOIN film f ON f.film_id = i.film_id "   
-				+"left JOIN (SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '대여불가' "
-				+"ELSE '대여가능' END return_date FROM rental WHERE (inventory_id, rental_date) "
+				+"left JOIN (SELECT inventory_id, customer_id, CASE WHEN return_date IS NULL THEN '반납하기' "
+				+"ELSE '대여하기' END return_date FROM rental WHERE (inventory_id, rental_date) "
 				+"IN (SELECT inventory_id,MAX(rental_date) rental_date FROM rental "
 				+"GROUP BY inventory_id)) t ON i.inventory_id = t.inventory_id "
 				+"INNER JOIN store st ON i.store_id = st.store_id "
@@ -120,9 +120,9 @@
 					<td><%=map.get("address") %></td>
 					<td>
 					<%
-							if(!map.get("returnDate").equals("대여불가")){ // 대여가능하면 표시
+							if(!map.get("returnDate").equals("반납하기")){ // 대여가능하면 표시
 					%>
-								<a href="/sakila/d0327/inventoryList.jsp"><%=map.get("returnDate") %></a>
+								<a href="/sakila/d0331/insertRentalForm.jsp?inventoryId=<%=map.get("inventoryId") %>"><%=map.get("returnDate") %></a>
 					<%
 							}else{
 					%>
