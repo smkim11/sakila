@@ -12,13 +12,14 @@
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.valueOf(request.getParameter("currentPage"));
 	}
-	int rowPerPage = 10;
+	int rowPerPage = 15;
 	int startIdx = (currentPage - 1)*rowPerPage;
 %>
 <%
 	Class.forName("com.mysql.cj.jdbc.Driver");
 	
 	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sakila", "root", "java1234");
+	// 고객정보를 보여주는 쿼리
 	String sql = "SELECT t.* FROM "
 				+"(SELECT c.customer_id id, CONCAT(c.first_name,' ',c.last_name) name"
 				+", a.address, a.postal_code zipCode, a.phone, ct.city, cn.country, "
@@ -26,6 +27,7 @@
 				+"FROM customer c INNER JOIN address a ON c.address_id = a.address_id "
 				+"INNER JOIN city ct ON ct.city_id = a.city_id "
 				+"INNER JOIN country cn ON cn.country_id = ct.country_id) t ORDER BY t.ID limit ?,?";
+	// 전체행의 개수
 	String sql2 = "select count(*) from "
 				+"(SELECT c.customer_id id, CONCAT(c.first_name,' ',c.last_name) name"
 				+", a.address, a.postal_code zipCode, a.phone, ct.city, cn.country, "
@@ -87,6 +89,7 @@
 </head>
 <body>
 	<h1>Customer List</h1>
+	<a href="/sakila/index.jsp">[시작페이지로]</a>
 	<table border="1">
 		<tr>
 			<th>ID</th>
