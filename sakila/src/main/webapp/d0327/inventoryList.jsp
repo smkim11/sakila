@@ -142,6 +142,7 @@
 		<input type="text" name="searchTitle">
 		<button type="submit">검색</button>
 	</form>
+	<div><%=currentPage %>/<%=lastPage %></div>
 	<%
 		if(currentPage>1){
 	%>
