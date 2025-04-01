@@ -122,11 +122,11 @@
 					<%
 							if(!map.get("returnDate").equals("반납하기")){ // 대여가능하면 표시
 					%>
-								<a href="/sakila/d0331/insertRentalForm.jsp?inventoryId=<%=map.get("inventoryId") %>"><%=map.get("returnDate") %></a>
+								<a href="/sakila/d0331/insertRentalForm.jsp?inventoryId=<%=map.get("inventoryId") %>"style="color:blue"><%=map.get("returnDate") %></a>
 					<%
 							}else{
 					%>
-								<a href="/sakila/d0401/returnRentalAction.jsp?inventoryId=<%=map.get("inventoryId") %>&searchTitle=<%=searchTitle %>&currentPage=<%=currentPage %>"><%=map.get("returnDate") %>
+								<a href="/sakila/d0401/returnRentalAction.jsp?inventoryId=<%=map.get("inventoryId") %>&searchTitle=<%=searchTitle %>&currentPage=<%=currentPage %>" style="color:red"><%=map.get("returnDate") %>
 					<%
 							}
 					%>
