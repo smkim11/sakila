@@ -37,6 +37,7 @@
 		<li><a href="/sakila/d0401/customerList.jsp">고객목록</a></li>
 		<li><a href="/sakila/d0401/filmInfo.jsp">영화목록2</a></li>
 		<li><a href="/sakila/d0401/actorInfo.jsp">배우목록2</a></li>
+		<li><a href="/sakila/d0401/salesList.jsp">매출목록</a></li>
 	</ol>
 </body>
 </html>
