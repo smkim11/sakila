@@ -126,7 +126,7 @@
 					<%
 							}else{
 					%>
-								<%=map.get("returnDate") %>
+								<a href="/sakila/d0401/returnRentalAction.jsp?inventoryId=<%=map.get("inventoryId") %>&searchTitle=<%=searchTitle %>&currentPage=<%=currentPage %>"><%=map.get("returnDate") %>
 					<%
 							}
 					%>
