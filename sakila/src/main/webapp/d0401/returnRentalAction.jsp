@@ -24,10 +24,9 @@
 	int row = stmt.executeUpdate();
 	if(row==1){
 		System.out.println("반납성공");
-		response.sendRedirect("/sakila/d0327/inventoryList.jsp?currenPage="+currentPage+"&searchTitle="+searchTitle);
 	}
-	else{
+	else if(row==0){
 		System.out.println("반납실패");
-		response.sendRedirect("/sakila/d0327/inventoryList.jsp?currenPage="+currentPage+"&searchTitle="+searchTitle);
 	}
+	response.sendRedirect("/sakila/d0327/inventoryList.jsp?searchTitle="+searchTitle+"&currentPage="+currentPage);
 %>
